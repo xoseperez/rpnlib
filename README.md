@@ -5,8 +5,7 @@ The library accepts a c-string with commands to execute and provides methods to 
 It is meant to be embedded into third party software as a way to provide the user a simple to implement scripting language.
 
 [![version](https://img.shields.io/badge/version-0.0.1-brightgreen.svg)](CHANGELOG.md)
-[![travis](https://travis-ci.org/xoseperez/rpnlib.svg?branch=esp32)](https://travis-ci.org/xoseperez/rpnlib)
-[![codacy](https://img.shields.io/codacy/grade/4ccbea0317c4415eb2d1c562feced407/esp32.svg)](https://www.codacy.com/app/xoseperez/rpnlib/dashboard)
+[![travis](https://travis-ci.org/xoseperez/rpnlib.svg?branch=master)](https://travis-ci.org/xoseperez/rpnlib)
 [![license](https://img.shields.io/github/license/xoseperez/rpnlib.svg)](LICENSE)
 <br />
 [![donate](https://img.shields.io/badge/donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=xose%2eperez%40gmail%2ecom&lc=US&no_note=0&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest)
