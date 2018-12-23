@@ -35,7 +35,7 @@ void setup() {
     
     rpn_context ctxt;
     rpn_begin(ctxt);
-    rpn_process(ctxt, (char *) COMMAND);
+    rpn_process(ctxt, COMMAND);
     
     unsigned char size = rpn_stack_size(ctxt);
     Serial.printf("Stack size: %d\n", size);

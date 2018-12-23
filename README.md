@@ -49,7 +49,7 @@ A simple code would be:
 ```
 rpn_context ctxt;
 rpn_begin(ctxt);
-rpn_process(ctxt, (char *) "4 2 - 5 * 1 +");
+rpn_process(ctxt, "4 2 - 5 * 1 +");
 
 unsigned char size = rpn_stack_size(ctxt);
 Serial.printf("Stack size: %d\n", size);

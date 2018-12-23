@@ -140,50 +140,54 @@ bool rpn_variables_clear(rpn_context & ctxt) {
 // Main methods
 // ----------------------------------------------------------------------------
 
-bool rpn_process(rpn_context & ctxt, char * input) {
+bool rpn_process(rpn_context & ctxt, const char * input) {
 
     char * token;
-    for (token = strtok(input, " "); token != NULL; token = strtok(NULL, " ")) {
+    char * base = strdup(input);
+
+    for (token = strtok(base, " "); token != NULL; token = strtok(NULL, " ")) {
         
         // Multiple spaces
         if (0 == strlen(token)) continue;
 
-        bool processed = false;
-
         // Is token a number?
         if (_rpn_is_number(token)) {
             ctxt.stack.push_back(atof(token));
-            processed = true;
             continue;
         }
 
         // Is token a function?
-        for (auto & f : ctxt.functions) {
-            if (strcmp(f.name, token) == 0) {
-                if (rpn_stack_size(ctxt) < f.argc) {
-                    rpn_error = RPN_ERROR_ARGUMENT_COUNT_MISMATCH;
-                    return false;
+        {
+            bool found = false;
+            for (auto & f : ctxt.functions) {
+                if (strcmp(f.name, token) == 0) {
+                    if (rpn_stack_size(ctxt) < f.argc) {
+                        rpn_error = RPN_ERROR_ARGUMENT_COUNT_MISMATCH;
+                        return false;
+                    }
+                    if (!(f.callback)(ctxt)) {
+                        // Method should set rpn_error
+                        return false;
+                    }
+                    found = true;
+                    break;
                 }
-                processed = (f.callback)(ctxt);
-                break;
             }
+            if (found) continue;
         }
-        if (processed) continue;
 
         // Is token a variable?
         {
             float value;
             if (rpn_variable_get(ctxt, token, value)) {
                 ctxt.stack.push_back(value);
-                processed = true;
+                continue;
             }
         }
 
         // Don't know the token
-        if (!processed) {
-            rpn_error = RPN_ERROR_UNKNOWN_TOKEN;
-            return false;
-        }
+        rpn_error = RPN_ERROR_UNKNOWN_TOKEN;
+        return false;
 
     }
     
