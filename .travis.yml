@@ -9,3 +9,4 @@ install:
     - pip install -U platformio
 script:
     - pushd examples/basic && pio run && popd
+    - pio remote -a Canopus test
