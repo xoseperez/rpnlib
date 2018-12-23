@@ -2,7 +2,7 @@
 
 RPNlib
 
-Basic example
+PlatformIO Unit Tests
 
 Copyright (C) 2018 by Xose Pérez <xose dot perez at gmail dot com>
 
@@ -39,7 +39,7 @@ void test_basic(void) {
 
 }
 
-void test_variables(void) {
+void test_variable(void) {
 
     rpn_context ctxt;
     rpn_begin(ctxt);
@@ -54,11 +54,33 @@ void test_variables(void) {
 
 }
 
+void test_custom_function(void) {
+
+    rpn_context ctxt;
+    rpn_begin(ctxt);
+    rpn_function_set(ctxt, "cube", 1, [](rpn_context & ctxt) {
+        float a;
+        rpn_stack_pop(ctxt, a);
+        rpn_stack_push(ctxt, a*a*a);
+        return true;
+    });
+    rpn_process(ctxt, "3 cube");
+
+    float value;
+
+    TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
+    rpn_stack_pop(ctxt, value);
+    TEST_ASSERT_EQUAL(27, value);
+
+}
+
+
 void setup() {
     delay(2000);
     UNITY_BEGIN();
     RUN_TEST(test_basic);
-    RUN_TEST(test_variables);
+    RUN_TEST(test_variable);
+    RUN_TEST(test_custom_function);
     UNITY_END();
 }
 
