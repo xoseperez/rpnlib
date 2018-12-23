@@ -84,4 +84,6 @@ void setup() {
     UNITY_END();
 }
 
-void loop() {}
+void loop() {
+    delay(1);
+}
