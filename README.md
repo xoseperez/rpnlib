@@ -48,7 +48,7 @@ A simple code would be:
 
 ```
 rpn_context ctxt;
-rpn_begin(ctxt);
+rpn_init(ctxt);
 rpn_process(ctxt, "4 2 - 5 * 1 +");
 
 unsigned char size = rpn_stack_size(ctxt);

@@ -82,6 +82,13 @@ bool rpn_stack_pop(rpn_context & ctxt, float & value) {
     return true;
 }
 
+bool rpn_stack_get(rpn_context & ctxt, unsigned char index, float & value) {
+    unsigned char size = ctxt.stack.size();
+    if (index >= size) return false;
+    value = ctxt.stack[size-index-1];
+    return true;
+}
+
 // ----------------------------------------------------------------------------
 // Functions methods
 // ----------------------------------------------------------------------------
@@ -94,6 +101,42 @@ bool rpn_function_set(rpn_context & ctxt, const char * name, unsigned char argc,
     ctxt.functions.push_back(f);
     return true;
 }
+
+bool rpn_functions_clear(rpn_context & ctxt) {
+    for (auto & v : ctxt.functions) {
+        free(v.name);
+    }
+    ctxt.functions.clear();
+    return true;
+}
+
+bool rpn_functions_init(rpn_context & ctxt) {
+
+    rpn_function_set(ctxt, "+", 2, _rpn_sum);
+    rpn_function_set(ctxt, "-", 2, _rpn_substract);
+    rpn_function_set(ctxt, "*", 2, _rpn_times);
+    rpn_function_set(ctxt, "/", 2, _rpn_divide);
+
+    rpn_function_set(ctxt, "==", 2, _rpn_eq);
+    rpn_function_set(ctxt, "!=", 2, _rpn_ne);
+    rpn_function_set(ctxt, ">", 2, _rpn_gt);
+    rpn_function_set(ctxt, ">=", 2, _rpn_ge);
+    rpn_function_set(ctxt, "<", 2, _rpn_lt);
+    rpn_function_set(ctxt, "<=", 2, _rpn_le);
+
+    rpn_function_set(ctxt, "and", 2, _rpn_and);
+    rpn_function_set(ctxt, "or", 2, _rpn_or);
+    rpn_function_set(ctxt, "xor", 2, _rpn_xor);
+    rpn_function_set(ctxt, "not", 1, _rpn_not);
+
+    rpn_function_set(ctxt, "dup", 1, _rpn_dup);
+    rpn_function_set(ctxt, "swap", 2, _rpn_swap);
+    rpn_function_set(ctxt, "rot", 3, _rpn_rot);
+    rpn_function_set(ctxt, "size", 0, _rpn_size);
+
+    return true;
+}
+
 
 // ----------------------------------------------------------------------------
 // Variables methods
@@ -126,6 +169,17 @@ bool rpn_variable_del(rpn_context & ctxt, const char * name) {
         }
     }
     return true;
+}
+
+unsigned char rpn_variables_size(rpn_context & ctxt) {
+    return ctxt.variables.size();
+}
+
+char * rpn_variable_name(rpn_context & ctxt, unsigned char i) {
+    if (i < ctxt.variables.size()) {
+        return ctxt.variables[i].name;
+    }
+    return NULL;
 }
 
 bool rpn_variables_clear(rpn_context & ctxt) {
@@ -197,30 +251,7 @@ bool rpn_process(rpn_context & ctxt, const char * input) {
 
 }
 
-bool rpn_begin(rpn_context & ctxt) {
-
-    rpn_function_set(ctxt, "+", 2, _rpn_sum);
-    rpn_function_set(ctxt, "-", 2, _rpn_substract);
-    rpn_function_set(ctxt, "*", 2, _rpn_times);
-    rpn_function_set(ctxt, "/", 2, _rpn_divide);
-
-    rpn_function_set(ctxt, "==", 2, _rpn_eq);
-    rpn_function_set(ctxt, "!=", 2, _rpn_ne);
-    rpn_function_set(ctxt, ">", 2, _rpn_gt);
-    rpn_function_set(ctxt, ">=", 2, _rpn_ge);
-    rpn_function_set(ctxt, "<", 2, _rpn_lt);
-    rpn_function_set(ctxt, "<=", 2, _rpn_le);
-
-    rpn_function_set(ctxt, "and", 2, _rpn_and);
-    rpn_function_set(ctxt, "or", 2, _rpn_or);
-    rpn_function_set(ctxt, "xor", 2, _rpn_xor);
-    rpn_function_set(ctxt, "not", 1, _rpn_not);
-
-    rpn_function_set(ctxt, "dup", 1, _rpn_dup);
-    rpn_function_set(ctxt, "swap", 2, _rpn_swap);
-    rpn_function_set(ctxt, "rot", 3, _rpn_rot);
-    rpn_function_set(ctxt, "size", 0, _rpn_size);
-
-    return true;
+bool rpn_init(rpn_context & ctxt) {
+    return rpn_functions_init(ctxt);
 }
 

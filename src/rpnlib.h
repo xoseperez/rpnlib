@@ -60,20 +60,25 @@ extern rpn_errors rpn_error;
 
 // ----------------------------------------------------------------------------
 
+bool rpn_functions_init(rpn_context &);
 bool rpn_function_set(rpn_context &, const char *, unsigned char, bool (*)(rpn_context &));
+bool rpn_functions_clear(rpn_context &);
 
 bool rpn_variable_set(rpn_context &, const char *, float);
 bool rpn_variable_get(rpn_context &, const char *, float &);
 bool rpn_variable_del(rpn_context &, const char *);
+unsigned char rpn_variables_size(rpn_context &);
+char * rpn_variable_name(rpn_context &, unsigned char);
 bool rpn_variables_clear(rpn_context &);
 
 bool rpn_stack_clear(rpn_context &);
 bool rpn_stack_push(rpn_context &, float);
 bool rpn_stack_pop(rpn_context &, float &);
 unsigned char rpn_stack_size(rpn_context &);
+bool rpn_stack_get(rpn_context &, unsigned char, float &);
 
 bool rpn_process(rpn_context &, const char *);
-bool rpn_begin(rpn_context &);
+bool rpn_init(rpn_context &);
 
 // ----------------------------------------------------------------------------
 
