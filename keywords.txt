@@ -12,20 +12,29 @@ rpn_context
 # Methods and Functions (KEYWORD2)
 #######################################
 
+rpn_functions_init
 rpn_function_set
+rpn_functions_clear
 
 rpn_variable_set
 rpn_variable_get
 rpn_variable_del
+rpn_variables_size
+rpn_variable_name
 rpn_variables_clear
 
 rpn_stack_clear
 rpn_stack_push
 rpn_stack_pop
 rpn_stack_size
+rpn_stack_get
 
 rpn_process
-rpn_begin
+rpn_init
+
+rpn_debug
+
+rpn_error
 
 #######################################
 # Instances (KEYWORD2)
@@ -35,4 +44,7 @@ rpn_begin
 # Constants (LITERAL1)
 #######################################
 
-rpn_error
+RPN_ERROR_OK
+RPN_ERROR_UNKNOWN_TOKEN
+RPN_ERROR_ARGUMENT_COUNT_MISMATCH
+RPN_ERROR_DIVIDE_BY_ZERO
