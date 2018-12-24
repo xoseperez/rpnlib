@@ -178,8 +178,9 @@ bool rpn_process(rpn_context & ctxt, const char * input) {
 
         // Is token a variable?
         {
-            float value;
-            if (rpn_variable_get(ctxt, token, value)) {
+            if (token[0] == '$') {
+                float value = 0;
+                rpn_variable_get(ctxt, &token[1], value);
                 ctxt.stack.push_back(value);
                 continue;
             }

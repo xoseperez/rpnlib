@@ -86,7 +86,7 @@ void test_variable(void) {
     rpn_context ctxt;
     rpn_begin(ctxt);
     rpn_variable_set(ctxt, "tmp", 25);
-    rpn_process(ctxt, "tmp 5 /");
+    rpn_process(ctxt, "$tmp 5 /");
 
     float value;
 
