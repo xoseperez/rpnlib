@@ -66,6 +66,93 @@ bool _rpn_divide(rpn_context & ctxt) {
 }
 
 // ----------------------------------------------------------------------------
+// Logic
+// ----------------------------------------------------------------------------
+
+bool _rpn_eq(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, a == b ? 1 : 0);
+    return true;
+}
+
+bool _rpn_ne(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, a != b ? 1 : 0);
+    return true;
+}
+
+bool _rpn_gt(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, a > b ? 1 : 0);
+    return true;
+}
+
+bool _rpn_ge(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, a >= b ? 1 : 0);
+    return true;
+}
+
+bool _rpn_lt(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, a < b ? 1 : 0);
+    return true;
+}
+
+bool _rpn_le(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, a <= b ? 1 : 0);
+    return true;
+}
+
+// ----------------------------------------------------------------------------
+// Boolean
+// ----------------------------------------------------------------------------
+
+bool _rpn_and(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, ((a!=0) & (b!=0)) ? 1 : 0);
+    return true;
+}
+
+bool _rpn_or(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, ((a!=0) | (b!=0)) ? 1 : 0);
+    return true;
+}
+
+bool _rpn_xor(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, ((a!=0) ^ (b!=0)) ? 1 : 0);
+    return true;
+}
+
+bool _rpn_not(rpn_context & ctxt) {
+    float a;
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, a == 0 ? 1 : 0);
+    return true;
+}
+
+// ----------------------------------------------------------------------------
 // Stack
 // ----------------------------------------------------------------------------
 
@@ -94,6 +181,11 @@ bool _rpn_rot(rpn_context & ctxt) {
     rpn_stack_push(ctxt, b);
     rpn_stack_push(ctxt, a);
     rpn_stack_push(ctxt, c);
+    return true;
+}
+
+bool _rpn_size(rpn_context & ctxt) {
+    rpn_stack_push(ctxt, rpn_stack_size(ctxt));
     return true;
 }
 

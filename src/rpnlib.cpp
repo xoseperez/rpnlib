@@ -203,9 +203,22 @@ bool rpn_begin(rpn_context & ctxt) {
     rpn_function_set(ctxt, "*", 2, _rpn_times);
     rpn_function_set(ctxt, "/", 2, _rpn_divide);
 
+    rpn_function_set(ctxt, "==", 2, _rpn_eq);
+    rpn_function_set(ctxt, "!=", 2, _rpn_ne);
+    rpn_function_set(ctxt, ">", 2, _rpn_gt);
+    rpn_function_set(ctxt, ">=", 2, _rpn_ge);
+    rpn_function_set(ctxt, "<", 2, _rpn_lt);
+    rpn_function_set(ctxt, "<=", 2, _rpn_le);
+
+    rpn_function_set(ctxt, "and", 2, _rpn_and);
+    rpn_function_set(ctxt, "or", 2, _rpn_or);
+    rpn_function_set(ctxt, "xor", 2, _rpn_xor);
+    rpn_function_set(ctxt, "not", 1, _rpn_not);
+
     rpn_function_set(ctxt, "dup", 1, _rpn_dup);
     rpn_function_set(ctxt, "swap", 2, _rpn_swap);
     rpn_function_set(ctxt, "rot", 3, _rpn_rot);
+    rpn_function_set(ctxt, "size", 0, _rpn_size);
 
     return true;
 }
