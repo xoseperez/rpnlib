@@ -62,6 +62,46 @@ for (unsigned char i=0; i<size; i++) {
 }
 ```
 
+## Supported keywords
+
+This is a list of supported keywords with their stack behaviour. 
+All keywords will throw an error if the number of available elements in the stack is less than the required parameters.
+All elements in the stack are repesented as natural (float) numbers. True is represented as 1, whilst false is represented as 0.
+Some keywords perform an automatic boolean cast of the elements poped from the stack. If the value is 0 the cast result is false, in any other case the result is true.
+
+
+```
+
++       ( a b -> a+b )
+-       ( a b -> a-b )
+*       ( a b -> a*b )
+/       ( a b -> a/b ) throws error if b==0
+
+==      ( a b -> c ) where if a==b then c=1 else c=0
+!=      ( a b -> c ) where if a!=b then c=1 else c=0
+>       ( a b -> c ) where if a>b then c=1 else c=0
+>=      ( a b -> c ) where if a>=b then c=1 else c=0
+<       ( a b -> c ) where if a<b then c=1 else c=0
+<=      ( a b -> c ) where if a<=b then c=1 else c=0
+
+and     ( a b -> c ) where c is 1 if both a and b are different from 0
+or      ( a b -> c ) where c is 1 if a or b are different from 0
+xor     ( a b -> c ) where c is 1 if either a or b are different from 0, but not both
+not     ( a -> b ) where b is 1 if a is 0, 0 otherwise
+
+dup     ( a -> a a )
+dup2    ( a b -> a b a b )
+swap    ( a b -> b a )
+rot     ( a b c -> b c a )
+unrot   ( a b c -> c a b )
+drop    ( a ->  )
+over    ( a b -> a b a )
+depth   ( a b c ... -> a b c ... n ) where n is the number of elements in the stack
+
+if      ( a b c -> d ) where if a!=0 then d=b else d=c
+
+```
+
 ## License
 
 Copyright (C) 2018 by Xose Pérez <xose dot perez at gmail dot com>
