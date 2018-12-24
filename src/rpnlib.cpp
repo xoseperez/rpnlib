@@ -31,6 +31,7 @@ along with the rpnlib library.  If not, see <http://www.gnu.org/licenses/>.
 // ----------------------------------------------------------------------------
 
 rpn_errors rpn_error = RPN_ERROR_OK;
+void(*_rpn_debug_callback)(rpn_context &, char *) = NULL;
 
 // ----------------------------------------------------------------------------
 // Utils
@@ -130,13 +131,18 @@ bool rpn_functions_init(rpn_context & ctxt) {
     rpn_function_set(ctxt, "not", 1, _rpn_not);
 
     rpn_function_set(ctxt, "dup", 1, _rpn_dup);
+    rpn_function_set(ctxt, "dup2", 2, _rpn_dup2);
     rpn_function_set(ctxt, "swap", 2, _rpn_swap);
     rpn_function_set(ctxt, "rot", 3, _rpn_rot);
-    rpn_function_set(ctxt, "size", 0, _rpn_size);
+    rpn_function_set(ctxt, "unrot", 3, _rpn_unrot);
+    rpn_function_set(ctxt, "drop", 1, _rpn_drop);
+    rpn_function_set(ctxt, "over", 2, _rpn_over);
+    rpn_function_set(ctxt, "depth", 0, _rpn_depth);
+
+    rpn_function_set(ctxt, "if", 3, _rpn_if);
 
     return true;
 }
-
 
 // ----------------------------------------------------------------------------
 // Variables methods
@@ -201,6 +207,11 @@ bool rpn_process(rpn_context & ctxt, const char * input) {
 
     for (token = strtok(base, " "); token != NULL; token = strtok(NULL, " ")) {
         
+        // Debug callback
+        if (_rpn_debug_callback) {
+            (*_rpn_debug_callback)(ctxt, token);
+        }
+
         // Multiple spaces
         if (0 == strlen(token)) continue;
 
@@ -249,6 +260,11 @@ bool rpn_process(rpn_context & ctxt, const char * input) {
     rpn_error = RPN_ERROR_OK;
     return true;
 
+}
+
+bool rpn_debug(void(*callback)(rpn_context &, char *)) {
+    _rpn_debug_callback = callback;
+    return true;
 }
 
 bool rpn_init(rpn_context & ctxt) {

@@ -57,6 +57,7 @@ enum rpn_errors {
 // ----------------------------------------------------------------------------
 
 extern rpn_errors rpn_error;
+extern void(*_rpn_debug_callback)(rpn_context &, char *);
 
 // ----------------------------------------------------------------------------
 
@@ -79,6 +80,8 @@ bool rpn_stack_get(rpn_context &, unsigned char, float &);
 
 bool rpn_process(rpn_context &, const char *);
 bool rpn_init(rpn_context &);
+
+bool rpn_debug(void(*)(rpn_context &, char *));
 
 // ----------------------------------------------------------------------------
 

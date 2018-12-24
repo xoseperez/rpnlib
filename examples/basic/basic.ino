@@ -24,27 +24,35 @@ along with the rpnlib library.  If not, see <http://www.gnu.org/licenses/>.
 #include <Arduino.h>
 #include "rpnlib.h"
 
-#define COMMAND     "5 dup *"
+void dump_stack(rpn_context & ctxt) {
+    float value;
+    unsigned char index = rpn_stack_size(ctxt)-1;
+    Serial.printf("Stack\n--------------------\n");
+    while (rpn_stack_get(ctxt, index, value)) {
+        Serial.printf("[%02d] %.2f\n", index--, value);
+    }
+    Serial.println();
+}
 
 void setup() {
     
+    // Init serial communication with the computer
     Serial.begin(115200);
     delay(2000);
     Serial.println();
     Serial.println();
     
+    // Create context
     rpn_context ctxt;
+    
+    // Initialize context
     rpn_init(ctxt);
-    rpn_process(ctxt, COMMAND);
+
+    // Process command (does 5 times 5)
+    rpn_process(ctxt, "5 dup *");
     
-    unsigned char size = rpn_stack_size(ctxt);
-    Serial.printf("Stack size: %d\n", size);
-    
-    float value;
-    for (unsigned char i=0; i<size; i++) {
-        rpn_stack_pop(ctxt, value);
-        Serial.printf("Stack level #%d value: %f\n", i, value);
-    }
+    // Show final stack
+    dump_stack(ctxt);
 
 }
 

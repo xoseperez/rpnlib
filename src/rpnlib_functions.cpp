@@ -153,6 +153,19 @@ bool _rpn_not(rpn_context & ctxt) {
 }
 
 // ----------------------------------------------------------------------------
+// Conditionals
+// ----------------------------------------------------------------------------
+
+bool _rpn_if(rpn_context & ctxt) {
+    float a, b, c;
+    rpn_stack_pop(ctxt, c);
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, (a!=0) ? b : c);
+    return true;
+}
+
+// ----------------------------------------------------------------------------
 // Stack
 // ----------------------------------------------------------------------------
 
@@ -160,6 +173,27 @@ bool _rpn_dup(rpn_context & ctxt) {
     float a;
     rpn_stack_pop(ctxt, a);
     rpn_stack_push(ctxt, a);
+    rpn_stack_push(ctxt, a);
+    return true;
+}
+
+bool _rpn_dup2(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, a);
+    rpn_stack_push(ctxt, b);
+    rpn_stack_push(ctxt, a);
+    rpn_stack_push(ctxt, b);
+    return true;
+}
+
+bool _rpn_over(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, a);
+    rpn_stack_push(ctxt, b);
     rpn_stack_push(ctxt, a);
     return true;
 }
@@ -173,18 +207,35 @@ bool _rpn_swap(rpn_context & ctxt) {
     return true;
 }
 
+bool _rpn_unrot(rpn_context & ctxt) {
+    float a, b, c;
+    rpn_stack_pop(ctxt, c);
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, c);
+    rpn_stack_push(ctxt, a);
+    rpn_stack_push(ctxt, b);
+    return true;
+}
+
 bool _rpn_rot(rpn_context & ctxt) {
     float a, b, c;
     rpn_stack_pop(ctxt, c);
     rpn_stack_pop(ctxt, b);
     rpn_stack_pop(ctxt, a);
-    rpn_stack_push(ctxt, b);
-    rpn_stack_push(ctxt, a);
+    rpn_stack_push(ctxt, b); 
     rpn_stack_push(ctxt, c);
+    rpn_stack_push(ctxt, a);
     return true;
 }
 
-bool _rpn_size(rpn_context & ctxt) {
+bool _rpn_drop(rpn_context & ctxt) {
+    float a;
+    rpn_stack_pop(ctxt, a);
+    return true;
+}
+
+bool _rpn_depth(rpn_context & ctxt) {
     rpn_stack_push(ctxt, rpn_stack_size(ctxt));
     return true;
 }
