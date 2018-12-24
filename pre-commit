@@ -96,7 +96,7 @@ if __name__ == "__main__":
         "REPO": repo,
         "BRANCH": git_branch(),
         "VERSION": get_version(base),
-        "CODACY": ""
+        "CODACY": "dca10aead98240db83c23ef550b591dc"
     }
     templates = [
         (k, tmpl.format(**fmt))
