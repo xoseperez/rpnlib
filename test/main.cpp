@@ -31,11 +31,25 @@ void test_math(void) {
     rpn_context ctxt;
 
     TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_process(ctxt, "5 2 * 3 +"));
+    TEST_ASSERT_TRUE(rpn_process(ctxt, "5 2 * 3 + 5 mod"));
     TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
     TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
     TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL(13, value);
+    TEST_ASSERT_EQUAL(3, value);
+
+}
+
+void test_math_advanced(void) {
+
+    float value;
+    rpn_context ctxt;
+
+    TEST_ASSERT_TRUE(rpn_init(ctxt));
+    TEST_ASSERT_TRUE(rpn_process(ctxt, "10 2 pow sqrt log10"));
+    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
+    TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
+    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
+    TEST_ASSERT_EQUAL(1, value);
 
 }
 
@@ -163,6 +177,7 @@ void setup() {
     delay(2000);
     UNITY_BEGIN();
     RUN_TEST(test_math);
+    RUN_TEST(test_math_advanced);
     RUN_TEST(test_stack);
     RUN_TEST(test_logic);
     RUN_TEST(test_boolean);

@@ -51,7 +51,8 @@ enum rpn_errors {
     RPN_ERROR_OK,
     RPN_ERROR_UNKNOWN_TOKEN,
     RPN_ERROR_ARGUMENT_COUNT_MISMATCH,
-    RPN_ERROR_DIVIDE_BY_ZERO
+    RPN_ERROR_DIVIDE_BY_ZERO,
+    RPN_ERROR_UNVALID_ARGUMENT
 };
 
 // ----------------------------------------------------------------------------

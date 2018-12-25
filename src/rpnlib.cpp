@@ -117,6 +117,17 @@ bool rpn_functions_init(rpn_context & ctxt) {
     rpn_function_set(ctxt, "-", 2, _rpn_substract);
     rpn_function_set(ctxt, "*", 2, _rpn_times);
     rpn_function_set(ctxt, "/", 2, _rpn_divide);
+    rpn_function_set(ctxt, "mod", 2, _rpn_mod);
+
+    rpn_function_set(ctxt, "sqrt", 1, _rpn_sqrt);
+    rpn_function_set(ctxt, "log", 1, _rpn_log);
+    rpn_function_set(ctxt, "log10", 1, _rpn_log10);
+    rpn_function_set(ctxt, "exp", 1, _rpn_exp);
+    rpn_function_set(ctxt, "fmod", 1, _rpn_fmod);
+    rpn_function_set(ctxt, "pow", 1, _rpn_pow);
+    rpn_function_set(ctxt, "cos", 1, _rpn_cos);
+    rpn_function_set(ctxt, "sin", 1, _rpn_sin);
+    rpn_function_set(ctxt, "tan", 1, _rpn_tan);
 
     rpn_function_set(ctxt, "==", 2, _rpn_eq);
     rpn_function_set(ctxt, "!=", 2, _rpn_ne);
