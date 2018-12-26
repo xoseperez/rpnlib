@@ -35,7 +35,7 @@ void test_math(void) {
     TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
     TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
     TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL(3, value);
+    TEST_ASSERT_EQUAL_FLOAT(3, value);
 
 }
 
@@ -49,7 +49,21 @@ void test_math_advanced(void) {
     TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
     TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
     TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL(1, value);
+    TEST_ASSERT_EQUAL_FLOAT(1, value);
+
+}
+
+void test_trig(void) {
+
+    float value;
+    rpn_context ctxt;
+
+    TEST_ASSERT_TRUE(rpn_init(ctxt));
+    TEST_ASSERT_TRUE(rpn_process(ctxt, "pi 4 / cos 2 sqrt *"));
+    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
+    TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
+    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
+    TEST_ASSERT_EQUAL_FLOAT(1, value);
 
 }
 
@@ -63,7 +77,7 @@ void test_stack(void) {
     TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
     TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
     TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL(6, value);
+    TEST_ASSERT_EQUAL_FLOAT(6, value);
 
 }
 
@@ -77,13 +91,13 @@ void test_logic(void) {
     TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
     TEST_ASSERT_EQUAL(4, rpn_stack_size(ctxt));
     TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 0, value));
-    TEST_ASSERT_EQUAL(0, value);
+    TEST_ASSERT_EQUAL_FLOAT(0, value);
     TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 1, value));
-    TEST_ASSERT_EQUAL(1, value);
+    TEST_ASSERT_EQUAL_FLOAT(1, value);
     TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 2, value));
-    TEST_ASSERT_EQUAL(0, value);
+    TEST_ASSERT_EQUAL_FLOAT(0, value);
     TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 3, value));
-    TEST_ASSERT_EQUAL(1, value);
+    TEST_ASSERT_EQUAL_FLOAT(1, value);
 
 }
 
@@ -97,13 +111,13 @@ void test_boolean(void) {
     TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
     TEST_ASSERT_EQUAL(4, rpn_stack_size(ctxt));
     TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 0, value));
-    TEST_ASSERT_EQUAL(0, value);
+    TEST_ASSERT_EQUAL_FLOAT(0, value);
     TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 1, value));
-    TEST_ASSERT_EQUAL(1, value);
+    TEST_ASSERT_EQUAL_FLOAT(1, value);
     TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 2, value));
-    TEST_ASSERT_EQUAL(1, value);
+    TEST_ASSERT_EQUAL_FLOAT(1, value);
     TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 3, value));
-    TEST_ASSERT_EQUAL(0, value);
+    TEST_ASSERT_EQUAL_FLOAT(0, value);
 
 }
 
@@ -117,7 +131,7 @@ void test_variable(void) {
     TEST_ASSERT_TRUE(rpn_process(ctxt, "$tmp 5 /"));
     TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
     TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL(5, value);
+    TEST_ASSERT_EQUAL_FLOAT(5, value);
     TEST_ASSERT_EQUAL(1, rpn_variables_size(ctxt));
     TEST_ASSERT_TRUE(rpn_variables_clear(ctxt));
     TEST_ASSERT_EQUAL(0, rpn_variables_size(ctxt));
@@ -139,7 +153,7 @@ void test_custom_function(void) {
     TEST_ASSERT_TRUE(rpn_process(ctxt, "3 cube"));
     TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
     TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL(27, value);
+    TEST_ASSERT_EQUAL_FLOAT(27, value);
 
 }
 
@@ -178,6 +192,7 @@ void setup() {
     UNITY_BEGIN();
     RUN_TEST(test_math);
     RUN_TEST(test_math_advanced);
+    RUN_TEST(test_trig);
     RUN_TEST(test_stack);
     RUN_TEST(test_logic);
     RUN_TEST(test_boolean);

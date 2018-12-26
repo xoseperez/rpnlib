@@ -113,6 +113,8 @@ bool rpn_functions_clear(rpn_context & ctxt) {
 
 bool rpn_functions_init(rpn_context & ctxt) {
 
+    rpn_function_set(ctxt, "pi", 0, _rpn_pi);
+
     rpn_function_set(ctxt, "+", 2, _rpn_sum);
     rpn_function_set(ctxt, "-", 2, _rpn_substract);
     rpn_function_set(ctxt, "*", 2, _rpn_times);
@@ -123,8 +125,8 @@ bool rpn_functions_init(rpn_context & ctxt) {
     rpn_function_set(ctxt, "log", 1, _rpn_log);
     rpn_function_set(ctxt, "log10", 1, _rpn_log10);
     rpn_function_set(ctxt, "exp", 1, _rpn_exp);
-    rpn_function_set(ctxt, "fmod", 1, _rpn_fmod);
-    rpn_function_set(ctxt, "pow", 1, _rpn_pow);
+    rpn_function_set(ctxt, "fmod", 2, _rpn_fmod);
+    rpn_function_set(ctxt, "pow", 2, _rpn_pow);
     rpn_function_set(ctxt, "cos", 1, _rpn_cos);
     rpn_function_set(ctxt, "sin", 1, _rpn_sin);
     rpn_function_set(ctxt, "tan", 1, _rpn_tan);
