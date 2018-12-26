@@ -118,13 +118,13 @@ void test_variable(void) {
 
 }
 
-void test_custom_function(void) {
+void test_custom_operator(void) {
 
     float value;
     rpn_context ctxt;
     
     TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_function_set(ctxt, "cube", 1, [](rpn_context & ctxt) {
+    TEST_ASSERT_TRUE(rpn_operator_set(ctxt, "cube", 1, [](rpn_context & ctxt) {
         float a;
         rpn_stack_pop(ctxt, a);
         rpn_stack_push(ctxt, a*a*a);
@@ -181,7 +181,7 @@ void setup() {
     RUN_TEST(test_logic);
     RUN_TEST(test_boolean);
     RUN_TEST(test_variable);
-    RUN_TEST(test_custom_function);
+    RUN_TEST(test_custom_operator);
     RUN_TEST(test_error_divide_by_zero);
     RUN_TEST(test_error_argument_count_mismatch);
     RUN_TEST(test_error_unknown_token);

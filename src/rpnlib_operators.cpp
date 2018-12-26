@@ -25,13 +25,20 @@ extern "C" {
     #include "fs_math.h"
 }
 
+#define RPN_CONST_PI    3.141593
+#define RPN_CONST_E     2.178282
+
 // ----------------------------------------------------------------------------
 // Constants
 // ----------------------------------------------------------------------------
 
 bool _rpn_pi(rpn_context & ctxt) {
-    float pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062;
-    rpn_stack_push(ctxt, pi);
+    rpn_stack_push(ctxt, RPN_CONST_PI);
+    return true;
+}
+
+bool _rpn_e(rpn_context & ctxt) {
+    rpn_stack_push(ctxt, RPN_CONST_E);
     return true;
 }
 

@@ -39,11 +39,13 @@ The RPNlib is not an object-based (OOP) library but a context-based set of metho
 
 Using the library is pretty easy. Follow this steps:
 
-* Create the context (where stack, variables and functions are stored)
-* Initialize the functions
+* Create the context (where stack, variables and operators are stored)
+* Initialize the context (loads default operators)
 * Add any required variables (optional)
+* Add any additional custom operators (optional)
 * Process a command
 * Inspect stack
+* Clear context
 
 A simple code would be:
 
@@ -60,22 +62,44 @@ for (unsigned char i=0; i<size; i++) {
     rpn_stack_pop(ctxt, value);
     Serial.printf("Stack level #%d value: %f\n", i, value);
 }
+
+rpn_clear(ctxt);
 ```
 
-## Supported keywords
+## Supported operators
 
-This is a list of supported keywords with their stack behaviour. 
-All keywords will throw an error if the number of available elements in the stack is less than the required parameters.
+This is a list of supported operators with their stack behaviour. 
+Operators (and variables) are case-sensitive.
+All operators will throw an error if the number of available elements in the stack is less than the required parameters.
 All elements in the stack are repesented as natural (float) numbers. True is represented as 1, whilst false is represented as 0.
-Some keywords perform an automatic boolean cast of the elements poped from the stack. If the value is 0 the cast result is false, in any other case the result is true.
+Some operators perform an automatic boolean cast of the elements poped from the stack. If the value is 0 the cast result is false, in any other case the result is true.
 
 
 ```
+
+pi      ( -> a ) where a is the value of PI
+e       ( -> a ) where a is the value of e (base of the neperian logarithms)
 
 +       ( a b -> a+b )
 -       ( a b -> a-b )
 *       ( a b -> a*b )
 /       ( a b -> a/b ) throws error if b==0
+mod     ( a b -> a\b ) integer modulus
+
+round   ( a n -> b ) where b is a rounded to the n-th decimal
+ceil    ( a -> b ) where b is a rounded to the closes greater or equal integer
+floor   ( a -> b ) where b is a rounded to the closes lesser or equal integer
+int     ( a -> b ) alias for "floor"
+
+sqrt    ( a -> b ) where b is the square root of a
+log     ( a -> b ) where b is the neperian logarithm of a
+log10   ( a -> b ) where b is the base-10 logarithm of a
+exp     ( a -> b ) where b is the a power of e (base of the neperian logarithms)
+fmod    ( a b -> c ) real number modulus
+pow     ( a b -> c ) where c is the b power of a
+cos     ( a -> b ) where b is the cosinus of a, a in radians
+sin     ( a -> b ) where b is the sinus of a, a in radians
+tan     ( a -> b ) where b is the tangent of a, a in radians
 
 ==      ( a b -> c ) where if a==b then c=1 else c=0
 !=      ( a b -> c ) where if a!=b then c=1 else c=0
@@ -98,7 +122,7 @@ drop    ( a ->  )
 over    ( a b -> a b a )
 depth   ( a b c ... -> a b c ... n ) where n is the number of elements in the stack
 
-if      ( a b c -> d ) where if a!=0 then d=b else d=c
+ifn     ( a b c -> d ) where if a!=0 then d=b else d=c
 
 ```
 

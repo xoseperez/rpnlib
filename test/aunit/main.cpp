@@ -120,8 +120,8 @@ testF(CustomTest, test_variable) {
     assertEqual(0, rpn_variables_size(ctxt));
 }
 
-testF(CustomTest, test_custom_function) {
-    assertTrue(rpn_function_set(ctxt, "cube", 1, [](rpn_context & ctxt) {
+testF(CustomTest, test_custom_operator) {
+    assertTrue(rpn_operator_set(ctxt, "cube", 1, [](rpn_context & ctxt) {
         float a;
         rpn_stack_pop(ctxt, a);
         rpn_stack_push(ctxt, a*a*a);

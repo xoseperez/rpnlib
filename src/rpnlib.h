@@ -35,7 +35,7 @@ struct rpn_variable {
 
 struct rpn_context;
 
-struct rpn_function {
+struct rpn_operator {
     char * name;
     unsigned char argc;
     bool (*callback)(rpn_context &);
@@ -44,7 +44,7 @@ struct rpn_function {
 struct rpn_context {
     std::vector<float> stack;
     std::vector<rpn_variable> variables;
-    std::vector<rpn_function> functions;
+    std::vector<rpn_operator> operators;
 };
 
 enum rpn_errors {
@@ -62,9 +62,9 @@ extern void(*_rpn_debug_callback)(rpn_context &, char *);
 
 // ----------------------------------------------------------------------------
 
-bool rpn_functions_init(rpn_context &);
-bool rpn_function_set(rpn_context &, const char *, unsigned char, bool (*)(rpn_context &));
-bool rpn_functions_clear(rpn_context &);
+bool rpn_operators_init(rpn_context &);
+bool rpn_operator_set(rpn_context &, const char *, unsigned char, bool (*)(rpn_context &));
+bool rpn_operators_clear(rpn_context &);
 
 bool rpn_variable_set(rpn_context &, const char *, float);
 bool rpn_variable_get(rpn_context &, const char *, float &);
