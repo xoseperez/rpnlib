@@ -25,135 +25,81 @@ along with the rpnlib library.  If not, see <http://www.gnu.org/licenses/>.
 #include "rpnlib.h"
 #include <unity.h>
 
-void test_math(void) {
+// -----------------------------------------------------------------------------
+// Helper methods
+// -----------------------------------------------------------------------------
+
+void run_and_compare(const char * command, unsigned char depth, float * expected) {
 
     float value;
     rpn_context ctxt;
 
     TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_process(ctxt, "5 2 * 3 + 5 mod"));
+    TEST_ASSERT_TRUE(rpn_process(ctxt, command));
     TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
-    TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
-    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL_FLOAT(3, value);
 
+    TEST_ASSERT_EQUAL_INT8(depth, rpn_stack_size(ctxt));
+    for (unsigned char i=0; i<depth; i++) {
+        TEST_ASSERT_TRUE(rpn_stack_get(ctxt, i, value));
+        TEST_ASSERT_EQUAL_FLOAT(expected[i], value);
+    }
+
+}
+
+void run_and_error(const char * command, unsigned char error_code) {
+
+    rpn_context ctxt;
+
+    TEST_ASSERT_TRUE(rpn_init(ctxt));
+    TEST_ASSERT_FALSE(rpn_process(ctxt, command));
+    TEST_ASSERT_EQUAL_INT8(error_code, rpn_error);
+
+}
+
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
+void test_math(void) {
+    float expected[] = {3};
+    run_and_compare("5 2 * 3 + 5 mod", sizeof(expected)/sizeof(float), expected);
 }
 
 void test_math_advanced(void) {
-
-    float value;
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_process(ctxt, "10 2 pow sqrt log10"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
-    TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
-    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL_FLOAT(1, value);
-
+    float expected[] = {1};
+    run_and_compare("10 2 pow sqrt log10", sizeof(expected)/sizeof(float), expected);
 }
 
 void test_trig(void) {
-
-    float value;
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_process(ctxt, "pi 4 / cos 2 sqrt *"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
-    TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
-    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL_FLOAT(1, value);
-
+    float expected[] = {1};
+    run_and_compare("pi 4 / cos 2 sqrt *", sizeof(expected)/sizeof(float), expected);
 }
 
 void test_cast(void) {
-
-    float value;
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_process(ctxt, "pi 2 round pi 4 round 1.1 floor 1.1 ceil"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
-    TEST_ASSERT_EQUAL(4, rpn_stack_size(ctxt));
-    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL_FLOAT(2, value);
-    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL_FLOAT(1, value);
-    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL_FLOAT(3.1416, value);
-    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL_FLOAT(3.14, value);
-
+    float expected[] = {2, 1, 3.1416, 3.14};
+    run_and_compare("pi 2 round pi 4 round 1.1 floor 1.1 ceil", sizeof(expected)/sizeof(float), expected);
 }
 
 void test_conditional(void) {
-
-    float value;
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_process(ctxt, "1 2 3 ifn"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
-    TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
-    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL_FLOAT(2, value);
-
+    float expected[] = {2};
+    run_and_compare("1 2 3 ifn", sizeof(expected)/sizeof(float), expected);
 }
 
 void test_stack(void) {
-
-    float value;
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_process(ctxt, "1 3 dup unrot swap - *"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
-    TEST_ASSERT_EQUAL(1, rpn_stack_size(ctxt));
-    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
-    TEST_ASSERT_EQUAL_FLOAT(6, value);
-
+    float expected[] = {6};
+    run_and_compare("1 3 dup unrot swap - *", sizeof(expected)/sizeof(float), expected);
 }
 
 void test_logic(void) {
-
-    float value;
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_process(ctxt, "1 1 == 1 1 != 2 1 > 2 1 <"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
-    TEST_ASSERT_EQUAL(4, rpn_stack_size(ctxt));
-    TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 0, value));
-    TEST_ASSERT_EQUAL_FLOAT(0, value);
-    TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 1, value));
-    TEST_ASSERT_EQUAL_FLOAT(1, value);
-    TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 2, value));
-    TEST_ASSERT_EQUAL_FLOAT(0, value);
-    TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 3, value));
-    TEST_ASSERT_EQUAL_FLOAT(1, value);
-
+    float expected[] = {0, 1, 0, 1};
+    run_and_compare("1 1 == 1 1 != 2 1 > 2 1 <", sizeof(expected)/sizeof(float), expected);
 }
 
 void test_boolean(void) {
-
-    float value;
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_TRUE(rpn_process(ctxt, "2 0 and 2 0 or 2 0 xor 1 not"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
-    TEST_ASSERT_EQUAL(4, rpn_stack_size(ctxt));
-    TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 0, value));
-    TEST_ASSERT_EQUAL_FLOAT(0, value);
-    TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 1, value));
-    TEST_ASSERT_EQUAL_FLOAT(1, value);
-    TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 2, value));
-    TEST_ASSERT_EQUAL_FLOAT(1, value);
-    TEST_ASSERT_TRUE(rpn_stack_get(ctxt, 3, value));
-    TEST_ASSERT_EQUAL_FLOAT(0, value);
-
+    float expected[] = {0, 1, 1, 0};
+    run_and_compare("2 0 and 2 0 or 2 0 xor 1 not", sizeof(expected)/sizeof(float), expected);
 }
+
 
 void test_variable(void) {
 
@@ -192,33 +138,15 @@ void test_custom_function(void) {
 }
 
 void test_error_divide_by_zero(void) {
-
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_FALSE(rpn_process(ctxt, "5 0 /"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_DIVIDE_BY_ZERO, rpn_error);
-
+    run_and_error("5 0 /", RPN_ERROR_DIVIDE_BY_ZERO);
 }
 
 void test_error_argument_count_mismatch(void) {
-
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_FALSE(rpn_process(ctxt, "1 +"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_ARGUMENT_COUNT_MISMATCH, rpn_error);
-
+    run_and_error("1 +", RPN_ERROR_ARGUMENT_COUNT_MISMATCH);
 }
 
 void test_error_unknown_token(void) {
-
-    rpn_context ctxt;
-
-    TEST_ASSERT_TRUE(rpn_init(ctxt));
-    TEST_ASSERT_FALSE(rpn_process(ctxt, "1 2 sum"));
-    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_UNKNOWN_TOKEN, rpn_error);
-
+    run_and_error("1 2 sum", RPN_ERROR_UNKNOWN_TOKEN);
 }
 
 void test_memory(void) {
@@ -236,6 +164,10 @@ void test_memory(void) {
     TEST_ASSERT_EQUAL_INT32(start, ESP.getFreeHeap());
 
 }
+
+// -----------------------------------------------------------------------------
+// Main
+// -----------------------------------------------------------------------------
 
 void setup() {
     delay(2000);
