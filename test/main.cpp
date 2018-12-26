@@ -67,6 +67,26 @@ void test_trig(void) {
 
 }
 
+void test_cast(void) {
+
+    float value;
+    rpn_context ctxt;
+
+    TEST_ASSERT_TRUE(rpn_init(ctxt));
+    TEST_ASSERT_TRUE(rpn_process(ctxt, "pi 2 round pi 4 round 1.1 floor 1.1 ceil"));
+    TEST_ASSERT_EQUAL_INT8(RPN_ERROR_OK, rpn_error);
+    TEST_ASSERT_EQUAL(4, rpn_stack_size(ctxt));
+    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
+    TEST_ASSERT_EQUAL_FLOAT(2, value);
+    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
+    TEST_ASSERT_EQUAL_FLOAT(1, value);
+    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
+    TEST_ASSERT_EQUAL_FLOAT(3.1416, value);
+    TEST_ASSERT_TRUE(rpn_stack_pop(ctxt, value));
+    TEST_ASSERT_EQUAL_FLOAT(3.14, value);
+
+}
+
 void test_conditional(void) {
 
     float value;
@@ -207,11 +227,12 @@ void setup() {
     RUN_TEST(test_math);
     RUN_TEST(test_math_advanced);
     RUN_TEST(test_trig);
+    RUN_TEST(test_cast);
+    RUN_TEST(test_conditional);
     RUN_TEST(test_stack);
     RUN_TEST(test_logic);
     RUN_TEST(test_boolean);
     RUN_TEST(test_variable);
-    RUN_TEST(test_conditional);
     RUN_TEST(test_custom_function);
     RUN_TEST(test_error_divide_by_zero);
     RUN_TEST(test_error_argument_count_mismatch);

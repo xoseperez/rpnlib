@@ -267,6 +267,42 @@ bool _rpn_not(rpn_context & ctxt) {
 }
 
 // ----------------------------------------------------------------------------
+// Casting
+// ----------------------------------------------------------------------------
+
+bool _rpn_round(rpn_context & ctxt) {
+    
+    float a, b;
+    rpn_stack_pop(ctxt, b);
+    rpn_stack_pop(ctxt, a);
+    
+    unsigned char decimals = (int) b;
+    unsigned long multiplier = 1;
+    for (unsigned char i=0; i<decimals; i++) {
+        multiplier *= 10;
+    }
+    a = (float) (int(a * multiplier + 0.5)) / multiplier;
+
+    rpn_stack_push(ctxt, a);
+    return true;
+
+}
+
+bool _rpn_ceil(rpn_context & ctxt) {
+    float a;
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, int(a) + (a == int(a) ? 0 : 1));
+    return true;
+}
+
+bool _rpn_floor(rpn_context & ctxt) {
+    float a;
+    rpn_stack_pop(ctxt, a);
+    rpn_stack_push(ctxt, int(a));
+    return true;
+}
+
+// ----------------------------------------------------------------------------
 // Conditionals
 // ----------------------------------------------------------------------------
 
