@@ -58,6 +58,11 @@ class CustomTest: public TestOnce {
             compare(depth, expected);
         }
 
+        virtual void run_and_error(const char * command, unsigned char error_code) {
+            assertFalse(rpn_process(ctxt, command));
+            assertEqual(error_code, rpn_error);
+        }
+
         rpn_context ctxt;
 
 };
@@ -79,6 +84,63 @@ testF(CustomTest, test_math_advanced) {
 testF(CustomTest, test_trig) {
     float expected[] = {1};
     run_and_compare("pi 4 / cos 2 sqrt *", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_cast) {
+    float expected[] = {2, 1, 3.1416, 3.14};
+    run_and_compare("pi 2 round pi 4 round 1.1 floor 1.1 ceil", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_conditional) {
+    float expected[] = {2};
+    run_and_compare("1 2 3 ifn", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_stack) {
+    float expected[] = {6};
+    run_and_compare("1 3 dup unrot swap - *", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_logic) {
+    float expected[] = {0, 1, 0, 1};
+    run_and_compare("1 1 == 1 1 != 2 1 > 2 1 <", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_boolean) {
+    float expected[] = {0, 1, 1, 0};
+    run_and_compare("2 0 and 2 0 or 2 0 xor 1 not", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_variable) {
+    assertTrue(rpn_variable_set(ctxt, "tmp", 25));
+    float expected[] = {5};
+    run_and_compare("$tmp 5 /", sizeof(expected)/sizeof(float), expected);
+    assertEqual(1, rpn_variables_size(ctxt));
+    assertTrue(rpn_variables_clear(ctxt));
+    assertEqual(0, rpn_variables_size(ctxt));
+}
+
+testF(CustomTest, test_custom_function) {
+    assertTrue(rpn_function_set(ctxt, "cube", 1, [](rpn_context & ctxt) {
+        float a;
+        rpn_stack_pop(ctxt, a);
+        rpn_stack_push(ctxt, a*a*a);
+        return true;
+    }));
+    float expected[] = {27};
+    run_and_compare("3 cube", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_error_divide_by_zero) {
+    run_and_error("5 0 /", RPN_ERROR_DIVIDE_BY_ZERO);
+}
+
+testF(CustomTest, test_error_argument_count_mismatch) {
+    run_and_error("1 +", RPN_ERROR_ARGUMENT_COUNT_MISMATCH);
+}
+
+testF(CustomTest, test_error_unknown_token) {
+    run_and_error("1 2 sum", RPN_ERROR_UNKNOWN_TOKEN);
 }
 
 test(test_memory) {
@@ -104,7 +166,7 @@ test(test_memory) {
 void setup() {
 
     Serial.begin(115200);
-    while (!Serial);
+    delay(2000);
 
     Printer::setPrinter(&Serial);
     //TestRunner::setVerbosity(Verbosity::kAll);
