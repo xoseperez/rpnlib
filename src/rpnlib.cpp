@@ -152,7 +152,7 @@ bool rpn_functions_init(rpn_context & ctxt) {
     rpn_function_set(ctxt, "over", 2, _rpn_over);
     rpn_function_set(ctxt, "depth", 0, _rpn_depth);
 
-    rpn_function_set(ctxt, "if", 3, _rpn_if);
+    rpn_function_set(ctxt, "ifn", 3, _rpn_ifn);
 
     return true;
 }

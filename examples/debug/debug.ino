@@ -70,7 +70,7 @@ void setup() {
     });
 
     // Load variables
-    rpn_variable_set(ctxt, "temperature", 19);
+    rpn_variable_set(ctxt, "temperature", 22);
     rpn_variable_set(ctxt, "relay", 1);
 
     // Show variables
@@ -81,7 +81,7 @@ void setup() {
     // returns the expected relay (controlling a heater) accordingly. 
     // If the temperature is in between those values the relay status does not change.
     // This is a simple hysteresis behaviour.
-    rpn_process(ctxt, "$temperature dup 18 < swap 21 < dup2 xor not unrot and $relay if");
+    rpn_process(ctxt, "$temperature dup 18 < swap 21 < dup2 xor not unrot and $relay ifn");
     
     // Show final stack
     dump_stack(ctxt);

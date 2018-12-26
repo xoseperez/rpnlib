@@ -270,7 +270,7 @@ bool _rpn_not(rpn_context & ctxt) {
 // Conditionals
 // ----------------------------------------------------------------------------
 
-bool _rpn_if(rpn_context & ctxt) {
+bool _rpn_ifn(rpn_context & ctxt) {
     float a, b, c;
     rpn_stack_pop(ctxt, c);
     rpn_stack_pop(ctxt, b);
