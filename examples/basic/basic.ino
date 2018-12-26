@@ -54,6 +54,9 @@ void setup() {
     // Show final stack
     dump_stack(ctxt);
 
+    // Clear the context and free resources
+    rpn_clear(ctxt);
+
 }
 
 void loop() {

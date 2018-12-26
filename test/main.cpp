@@ -221,6 +221,22 @@ void test_error_unknown_token(void) {
 
 }
 
+void test_memory(void) {
+
+    unsigned long start = ESP.getFreeHeap();
+
+    {
+        rpn_context ctxt;
+        TEST_ASSERT_TRUE(rpn_init(ctxt));
+        TEST_ASSERT_TRUE(rpn_variable_set(ctxt, "value", 5));
+        TEST_ASSERT_TRUE(rpn_process(ctxt, "$value dup 1 - dup 1 - dup 1 - dup 1 -"));
+        TEST_ASSERT_TRUE(rpn_clear(ctxt));
+    }
+
+    TEST_ASSERT_EQUAL_INT32(start, ESP.getFreeHeap());
+
+}
+
 void setup() {
     delay(2000);
     UNITY_BEGIN();
@@ -237,6 +253,7 @@ void setup() {
     RUN_TEST(test_error_divide_by_zero);
     RUN_TEST(test_error_argument_count_mismatch);
     RUN_TEST(test_error_unknown_token);
+    RUN_TEST(test_memory);
     UNITY_END();
 }
 

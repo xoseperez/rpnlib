@@ -95,6 +95,9 @@ void setup() {
         Serial.println("Stack should have only 1 value");
     }
 
+    // Clear the context and free resources
+    rpn_clear(ctxt);
+
 }
 
 void loop() {

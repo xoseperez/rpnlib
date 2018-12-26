@@ -223,6 +223,8 @@ bool rpn_process(rpn_context & ctxt, const char * input) {
     char * token;
     char * base = strdup(input);
 
+    rpn_error = RPN_ERROR_OK;
+
     for (token = strtok(base, " "); token != NULL; token = strtok(NULL, " ")) {
         
         // Debug callback
@@ -231,7 +233,9 @@ bool rpn_process(rpn_context & ctxt, const char * input) {
         }
 
         // Multiple spaces
-        if (0 == strlen(token)) continue;
+        if (0 == strlen(token)) {
+            continue;
+        }
 
         // Is token a number?
         if (_rpn_is_number(token)) {
@@ -246,16 +250,17 @@ bool rpn_process(rpn_context & ctxt, const char * input) {
                 if (strcmp(f.name, token) == 0) {
                     if (rpn_stack_size(ctxt) < f.argc) {
                         rpn_error = RPN_ERROR_ARGUMENT_COUNT_MISMATCH;
-                        return false;
+                        break;
                     }
                     if (!(f.callback)(ctxt)) {
                         // Method should set rpn_error
-                        return false;
+                        break;
                     }
                     found = true;
                     break;
                 }
             }
+            if (RPN_ERROR_OK != rpn_error) break;
             if (found) continue;
         }
 
@@ -271,12 +276,12 @@ bool rpn_process(rpn_context & ctxt, const char * input) {
 
         // Don't know the token
         rpn_error = RPN_ERROR_UNKNOWN_TOKEN;
-        return false;
+        break;
 
     }
     
-    rpn_error = RPN_ERROR_OK;
-    return true;
+    free(base);
+    return (RPN_ERROR_OK == rpn_error);
 
 }
 
@@ -289,3 +294,9 @@ bool rpn_init(rpn_context & ctxt) {
     return rpn_functions_init(ctxt);
 }
 
+bool rpn_clear(rpn_context & ctxt) {
+    rpn_functions_clear(ctxt);
+    rpn_variables_clear(ctxt);
+    rpn_stack_clear(ctxt);
+    return true;
+}
