@@ -69,10 +69,13 @@ rpn_clear(ctxt);
 ## Supported operators
 
 This is a list of supported operators with their stack behaviour. 
-Operators (and variables) are case-sensitive.
-All operators will throw an error if the number of available elements in the stack is less than the required parameters.
-All elements in the stack are repesented as natural (float) numbers. True is represented as 1, whilst false is represented as 0.
-Some operators perform an automatic boolean cast of the elements poped from the stack. If the value is 0 the cast result is false, in any other case the result is true.
+
+* Operators (and variables) are case-sensitive.
+* All operators will throw an error if the number of available elements in the stack is less than the required parameters.
+* All elements in the stack are repesented as natural (float) numbers. 
+* Some operators perform an automatic cast of the elements poped from the stack.
+* A boolean cast will be false if the element is 0, true otherwise.
+* True is represented as 1, whilst false is represented as 0.
 
 
 ```
@@ -84,34 +87,34 @@ e       ( -> a ) where a is the value of e (base of the neperian logarithms)
 -       ( a b -> a-b )
 *       ( a b -> a*b )
 /       ( a b -> a/b ) throws error if b==0
-mod     ( a b -> a\b ) integer modulus
+mod     ( a b -> a\b ) returns the reminder for the a/b division as integers
 
 round   ( a n -> b ) where b is a rounded to the n-th decimal
 ceil    ( a -> b ) where b is a rounded to the closes greater or equal integer
 floor   ( a -> b ) where b is a rounded to the closes lesser or equal integer
 int     ( a -> b ) alias for "floor"
 
-sqrt    ( a -> b ) where b is the square root of a
-log     ( a -> b ) where b is the neperian logarithm of a
-log10   ( a -> b ) where b is the base-10 logarithm of a
-exp     ( a -> b ) where b is the a power of e (base of the neperian logarithms)
-fmod    ( a b -> c ) real number modulus
-pow     ( a b -> c ) where c is the b power of a
-cos     ( a -> b ) where b is the cosinus of a, a in radians
-sin     ( a -> b ) where b is the sinus of a, a in radians
-tan     ( a -> b ) where b is the tangent of a, a in radians
+sqrt    ( a -> sqrt(a) )
+log     ( a -> log(a) )
+log10   ( a -> log10(a) )
+exp     ( a -> e^a )
+fmod    ( a b -> a\b ) returns the reminder for the a/b division as real numbers
+pow     ( a b -> a^b )
+cos     ( a -> cos(a) ) a in radians
+sin     ( a -> sin(a) ) a in radians
+tan     ( a -> tan(a) ) a in radians
 
-==      ( a b -> c ) where if a==b then c=1 else c=0
-!=      ( a b -> c ) where if a!=b then c=1 else c=0
->       ( a b -> c ) where if a>b then c=1 else c=0
->=      ( a b -> c ) where if a>=b then c=1 else c=0
-<       ( a b -> c ) where if a<b then c=1 else c=0
-<=      ( a b -> c ) where if a<=b then c=1 else c=0
+==      ( a b -> a==b )
+!=      ( a b -> a!=b )
+>       ( a b -> a>b )
+>=      ( a b -> a>=b )
+<       ( a b -> a<b )
+<=      ( a b -> a<=b )
 
 and     ( a b -> c ) where c is 1 if both a and b are different from 0
 or      ( a b -> c ) where c is 1 if a or b are different from 0
 xor     ( a b -> c ) where c is 1 if either a or b are different from 0, but not both
-not     ( a -> b ) where b is 1 if a is 0, 0 otherwise
+not     ( a -> !a ) where b is 1 if a is 0, 0 otherwise
 
 dup     ( a -> a a )
 dup2    ( a b -> a b a b )
@@ -122,7 +125,7 @@ drop    ( a ->  )
 over    ( a b -> a b a )
 depth   ( a b c ... -> a b c ... n ) where n is the number of elements in the stack
 
-ifn     ( a b c -> d ) where if a!=0 then d=b else d=c
+ifn     ( a b c -> d ) if a!=0 then b else c
 
 ```
 
