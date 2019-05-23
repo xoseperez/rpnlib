@@ -2,7 +2,7 @@
 
 RPNlib
 
-Copyright (C) 2018 by Xose Pérez <xose dot perez at gmail dot com>
+Copyright (C) 2018-2019 by Xose Pérez <xose dot perez at gmail dot com>
 
 The rpnlib library is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -101,6 +101,8 @@ bool _rpn_mod(rpn_context & ctxt) {
 // Advanced math
 // ----------------------------------------------------------------------------
 
+#ifdef RPNLIB_ADVANCED_MATH
+
 bool _rpn_sqrt(rpn_context & ctxt) {
     float a;
     rpn_stack_pop(ctxt, a);
@@ -186,6 +188,8 @@ bool _rpn_tan(rpn_context & ctxt) {
     return true;
 }
 
+#endif
+
 // ----------------------------------------------------------------------------
 // Logic
 // ----------------------------------------------------------------------------
@@ -237,6 +241,100 @@ bool _rpn_le(rpn_context & ctxt) {
     rpn_stack_push(ctxt, a <= b ? 1 : 0);
     return true;
 }
+
+// ----------------------------------------------------------------------------
+// Advanced logic
+// ----------------------------------------------------------------------------
+
+bool _rpn_cmp(rpn_context & ctxt) {
+    float a, b;
+    rpn_stack_pop(ctxt, b); // compare to this
+    rpn_stack_pop(ctxt, a); // value
+    if (a < b) {
+        rpn_stack_push(ctxt, -1);
+    } else if (a > b) {
+        rpn_stack_push(ctxt, 1);
+    } else {
+        rpn_stack_push(ctxt, 0);
+    }
+    return true;
+};    
+
+bool _rpn_cmp3(rpn_context & ctxt) {
+    float a, b, c;
+    rpn_stack_pop(ctxt, c); // upper threshold
+    rpn_stack_pop(ctxt, b); // lower threshold
+    rpn_stack_pop(ctxt, a); // value
+    if (a < b) {
+        rpn_stack_push(ctxt, -1);
+    } else if (a > c) {
+        rpn_stack_push(ctxt, 1);
+    } else {
+        rpn_stack_push(ctxt, 0);
+    }
+    return true;
+};    
+
+bool _rpn_index(rpn_context & ctxt) {
+
+    float tmp;
+
+    // Number of values to map
+    rpn_stack_pop(ctxt, tmp);
+    unsigned char num = int(tmp);
+    if (0 == num) return false;
+    
+    // Get mapped values from stack
+    if (rpn_stack_size(ctxt) < num + 1) return false;
+    float values[num];
+    for (unsigned char i=0; i<num; i++) {
+        rpn_stack_pop(ctxt, tmp);    
+        values[num-i-1] = tmp;
+    }
+
+    // Get index
+    rpn_stack_pop(ctxt, tmp);
+    unsigned char index = int(tmp);
+    
+    // Return indexed value
+    if (index >= num) return false;
+    rpn_stack_push(ctxt, values[index]);
+    return true;
+
+};    
+
+bool _rpn_map(rpn_context & ctxt) {
+    
+    float value, from_low, from_high, to_low, to_high;
+    rpn_stack_pop(ctxt, to_high);
+    rpn_stack_pop(ctxt, to_low);
+    rpn_stack_pop(ctxt, from_high);
+    rpn_stack_pop(ctxt, from_low);
+    rpn_stack_pop(ctxt, value);
+
+    if (from_high == from_low) return false;
+    if (value < from_low) value = from_low;
+    if (value > from_high) value = from_high;
+    value = to_low + (value - from_low) * (to_high - to_low) / (from_high - from_low);
+    rpn_stack_push(ctxt, value);
+    return true;
+
+};
+
+bool _rpn_constrain(rpn_context & ctxt) {
+    float a, b, c;
+    rpn_stack_pop(ctxt, c); // upper threshold
+    rpn_stack_pop(ctxt, b); // lower threshold
+    rpn_stack_pop(ctxt, a); // value
+    if (a < b) {
+        rpn_stack_push(ctxt, b);
+    } else if (a > c) {
+        rpn_stack_push(ctxt, c);
+    } else {
+        rpn_stack_push(ctxt, a);
+    }
+    return true;
+};    
 
 // ----------------------------------------------------------------------------
 // Boolean
@@ -321,6 +419,13 @@ bool _rpn_ifn(rpn_context & ctxt) {
     rpn_stack_push(ctxt, (a!=0) ? b : c);
     return true;
 }
+
+bool _rpn_end(rpn_context & ctxt) {
+    float a;
+    rpn_stack_pop(ctxt, a);
+    if (a != 0) return false;
+    return true;
+};    
 
 // ----------------------------------------------------------------------------
 // Stack

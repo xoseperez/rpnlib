@@ -4,7 +4,7 @@ RPNlib
 
 AUnit Unit Tests
 
-Copyright (C) 2018 by Xose Pérez <xose dot perez at gmail dot com>
+Copyright (C) 2018-2019 by Xose Pérez <xose dot perez at gmail dot com>
 
 The rpnlib library is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -89,6 +89,31 @@ testF(CustomTest, test_trig) {
 testF(CustomTest, test_cast) {
     float expected[] = {2, 1, 3.1416, 3.14};
     run_and_compare("pi 2 round pi 4 round 1.1 floor 1.1 ceil", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_map) {
+    float expected[] = {25};
+    run_and_compare("256 0 1024 0 100 map", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_index) {
+    float expected[] = {30};
+    run_and_compare("2 10 20 30 40 50 5 index", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_cmp3_below) {
+    float expected[] = {-1};
+    run_and_compare("13 18 24 cmp3", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_cmp3_between) {
+    float expected[] = {0};
+    run_and_compare("18 18 24 cmp3", sizeof(expected)/sizeof(float), expected);
+}
+
+testF(CustomTest, test_cmp3_above) {
+    float expected[] = {1};
+    run_and_compare("25 18 24 cmp3", sizeof(expected)/sizeof(float), expected);
 }
 
 testF(CustomTest, test_conditional) {

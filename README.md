@@ -94,15 +94,15 @@ ceil    ( a -> b ) where b is a rounded to the closes greater or equal integer
 floor   ( a -> b ) where b is a rounded to the closes lesser or equal integer
 int     ( a -> b ) alias for "floor"
 
-sqrt    ( a -> sqrt(a) )
-log     ( a -> log(a) )
-log10   ( a -> log10(a) )
-exp     ( a -> e^a )
-fmod    ( a b -> a\b ) returns the reminder for the a/b division as real numbers
-pow     ( a b -> a^b )
-cos     ( a -> cos(a) ) a in radians
-sin     ( a -> sin(a) ) a in radians
-tan     ( a -> tan(a) ) a in radians
+sqrt    ( a -> sqrt(a) ) *
+log     ( a -> log(a) ) *
+log10   ( a -> log10(a) ) *
+exp     ( a -> e^a ) *
+fmod    ( a b -> a\b ) returns the reminder for the a/b division as real numbers *
+pow     ( a b -> a^b ) *
+cos     ( a -> cos(a) ) a in radians *
+sin     ( a -> sin(a) ) a in radians *
+tan     ( a -> tan(a) ) a in radians *
 
 ==      ( a b -> a==b )
 !=      ( a b -> a!=b )
@@ -110,6 +110,12 @@ tan     ( a -> tan(a) ) a in radians
 >=      ( a b -> a>=b )
 <       ( a b -> a<b )
 <=      ( a b -> a<=b )
+
+cmp     ( a b -> c ) c is -1 if a<b, 0 if a==b and 1 if a>b
+cmp3    ( a b c -> d ) d is -1 if a<b, 1 if a>c and 0 if equals to b or c or in the middle
+index   ( a v1 v2 ... b -> c ) returns the a-nth value from the v# list, b is the number of values in the v# list
+map     ( a b c d e -> f ) performs a rule of 3 mapping value a which goes from b to c to d to e
+constrain   (a b c -> d) ensures a is between (and included) b and c
 
 and     ( a b -> c ) where c is 1 if both a and b are different from 0
 or      ( a b -> c ) where c is 1 if a or b are different from 0
@@ -126,12 +132,15 @@ over    ( a b -> a b a )
 depth   ( a b c ... -> a b c ... n ) where n is the number of elements in the stack
 
 ifn     ( a b c -> d ) if a!=0 then b else c
+end     ( a -> ...) ends execution if a resolves to false
 
 ```
 
+Operators flagged with an asterisk (*) are only available if compiled with RPNLIB_ADVANCED_MATH build flag.
+
 ## License
 
-Copyright (C) 2018 by Xose Pérez <xose dot perez at gmail dot com>
+Copyright (C) 2018-2019 by Xose Pérez <xose dot perez at gmail dot com>
 
 The rpnlib library is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by

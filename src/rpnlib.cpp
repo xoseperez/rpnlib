@@ -2,7 +2,7 @@
 
 RPNlib
 
-Copyright (C) 2018 by Xose Pérez <xose dot perez at gmail dot com>
+Copyright (C) 2018-2019 by Xose Pérez <xose dot perez at gmail dot com>
 
 The rpnlib library is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -127,6 +127,7 @@ bool rpn_operators_init(rpn_context & ctxt) {
     rpn_operator_set(ctxt, "floor", 1, _rpn_floor);
     rpn_operator_set(ctxt, "int", 1, _rpn_floor);
 
+    #ifdef RPNLIB_ADVANCED_MATH
     rpn_operator_set(ctxt, "sqrt", 1, _rpn_sqrt);
     rpn_operator_set(ctxt, "log", 1, _rpn_log);
     rpn_operator_set(ctxt, "log10", 1, _rpn_log10);
@@ -136,6 +137,7 @@ bool rpn_operators_init(rpn_context & ctxt) {
     rpn_operator_set(ctxt, "cos", 1, _rpn_cos);
     rpn_operator_set(ctxt, "sin", 1, _rpn_sin);
     rpn_operator_set(ctxt, "tan", 1, _rpn_tan);
+    #endif
 
     rpn_operator_set(ctxt, "==", 2, _rpn_eq);
     rpn_operator_set(ctxt, "!=", 2, _rpn_ne);
@@ -143,6 +145,12 @@ bool rpn_operators_init(rpn_context & ctxt) {
     rpn_operator_set(ctxt, ">=", 2, _rpn_ge);
     rpn_operator_set(ctxt, "<", 2, _rpn_lt);
     rpn_operator_set(ctxt, "<=", 2, _rpn_le);
+
+    rpn_operator_set(ctxt, "cmp", 2, _rpn_cmp);
+    rpn_operator_set(ctxt, "cmp3", 3, _rpn_cmp3);
+    rpn_operator_set(ctxt, "index", 1, _rpn_index);
+    rpn_operator_set(ctxt, "map", 5, _rpn_map);
+    rpn_operator_set(ctxt, "constrain", 3, _rpn_constrain);
 
     rpn_operator_set(ctxt, "and", 2, _rpn_and);
     rpn_operator_set(ctxt, "or", 2, _rpn_or);
@@ -159,6 +167,7 @@ bool rpn_operators_init(rpn_context & ctxt) {
     rpn_operator_set(ctxt, "depth", 0, _rpn_depth);
 
     rpn_operator_set(ctxt, "ifn", 3, _rpn_ifn);
+    rpn_operator_set(ctxt, "end", 1, _rpn_end);
 
     return true;
 }

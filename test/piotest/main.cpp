@@ -4,7 +4,7 @@ RPNlib
 
 PlatformIO Unit Tests
 
-Copyright (C) 2018 by Xose Pérez <xose dot perez at gmail dot com>
+Copyright (C) 2018-2019 by Xose Pérez <xose dot perez at gmail dot com>
 
 The rpnlib library is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -78,6 +78,31 @@ void test_trig(void) {
 void test_cast(void) {
     float expected[] = {2, 1, 3.1416, 3.14};
     run_and_compare("pi 2 round pi 4 round 1.1 floor 1.1 ceil", sizeof(expected)/sizeof(float), expected);
+}
+
+void test_map(void) {
+    float expected[] = {25};
+    run_and_compare("256 0 1024 0 100 map", sizeof(expected)/sizeof(float), expected);
+}
+
+void test_index(void) {
+    float expected[] = {30};
+    run_and_compare("2 10 20 30 40 50 5 index", sizeof(expected)/sizeof(float), expected);
+}
+
+void test_cmp3_below(void) {
+    float expected[] = {-1};
+    run_and_compare("13 18 24 cmp3", sizeof(expected)/sizeof(float), expected);
+}
+
+void test_cmp3_between(void) {
+    float expected[] = {0};
+    run_and_compare("18 18 24 cmp3", sizeof(expected)/sizeof(float), expected);
+}
+
+void test_cmp3_above(void) {
+    float expected[] = {1};
+    run_and_compare("25 18 24 cmp3", sizeof(expected)/sizeof(float), expected);
 }
 
 void test_conditional(void) {
@@ -176,6 +201,11 @@ void setup() {
     RUN_TEST(test_math_advanced);
     RUN_TEST(test_trig);
     RUN_TEST(test_cast);
+    RUN_TEST(test_map);
+    RUN_TEST(test_index);
+    RUN_TEST(test_cmp3_below);
+    RUN_TEST(test_cmp3_between);
+    RUN_TEST(test_cmp3_above);
     RUN_TEST(test_conditional);
     RUN_TEST(test_stack);
     RUN_TEST(test_logic);
