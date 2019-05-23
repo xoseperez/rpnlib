@@ -4,7 +4,7 @@ RPNlib is a **Reverse Polish Notation** calculator for ESP8266 & ESP32 microcont
 The library accepts a c-string with commands to execute and provides methods to evaluate the output.
 It is meant to be embedded into third party software as a way to provide the user a simple to implement scripting language.
 
-[![version](https://img.shields.io/badge/version-0.0.2-brightgreen.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-0.1.0-brightgreen.svg)](CHANGELOG.md)
 [![codacy](https://img.shields.io/codacy/grade/dca10aead98240db83c23ef550b591dc/master.svg)](https://www.codacy.com/app/xoseperez/rpnlib/dashboard)
 [![travis](https://travis-ci.org/xoseperez/rpnlib.svg?branch=master)](https://travis-ci.org/xoseperez/rpnlib)
 [![license](https://img.shields.io/github/license/xoseperez/rpnlib.svg)](LICENSE)
