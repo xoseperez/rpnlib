@@ -79,7 +79,7 @@ bool rpn_stack_pop(rpn_context &, float &);
 unsigned char rpn_stack_size(rpn_context &);
 bool rpn_stack_get(rpn_context &, unsigned char, float &);
 
-bool rpn_process(rpn_context &, const char *);
+bool rpn_process(rpn_context &, const char *, bool variable_must_exist = false);
 bool rpn_init(rpn_context &);
 bool rpn_clear(rpn_context &);
 

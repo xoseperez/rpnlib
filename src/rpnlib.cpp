@@ -177,6 +177,12 @@ bool rpn_operators_init(rpn_context & ctxt) {
 // ----------------------------------------------------------------------------
 
 bool rpn_variable_set(rpn_context & ctxt, const char * name, float value) {
+    for (auto & v : ctxt.variables) {
+        if (strcmp(v.name, name) == 0) {
+            v.value = value;
+            return true;
+        }
+    }
     rpn_variable v;
     v.name = strdup(name);
     v.value = value;
@@ -191,7 +197,7 @@ bool rpn_variable_get(rpn_context & ctxt, const char * name, float & value) {
             return true;
         }
     }
-    return true;
+    return false;
 }
 
 bool rpn_variable_del(rpn_context & ctxt, const char * name) {
@@ -202,7 +208,7 @@ bool rpn_variable_del(rpn_context & ctxt, const char * name) {
             return true;
         }
     }
-    return true;
+    return false;
 }
 
 unsigned char rpn_variables_size(rpn_context & ctxt) {
@@ -228,7 +234,7 @@ bool rpn_variables_clear(rpn_context & ctxt) {
 // Main methods
 // ----------------------------------------------------------------------------
 
-bool rpn_process(rpn_context & ctxt, const char * input) {
+bool rpn_process(rpn_context & ctxt, const char * input, bool variable_must_exist) {
 
     char * token;
     char * base = strdup(input);
@@ -278,9 +284,11 @@ bool rpn_process(rpn_context & ctxt, const char * input) {
         {
             if (token[0] == '$') {
                 float value = 0;
-                rpn_variable_get(ctxt, &token[1], value);
+                bool exists = rpn_variable_get(ctxt, &token[1], value);
+                if (exists || !variable_must_exist) {
                 ctxt.stack.push_back(value);
                 continue;
+                }
             }
         }
 

@@ -3,7 +3,14 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.1.0]
+## [0.2.0] 2019-05-24
+### Added
+- rpn_process will (optionally) fail if variable does not exist
+
+### Fix
+- rpn_variable_set will replace value if variable already exists
+
+## [0.1.0] 2019-05-23
 ### Fixed
 - Clear context and memory leak fix
 - 
@@ -17,7 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Do not compile with advanced math support by default
 - Renamed 'if' to 'ifn' (numeric if)
 
-## [0.0.2]
+## [0.0.2] 2018-12-24
 ### Added
 - Remote testing using Travis and PIO Plus
 - Examples and more commmands
