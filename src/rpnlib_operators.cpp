@@ -97,6 +97,14 @@ bool _rpn_mod(rpn_context & ctxt) {
     return true;
 }
 
+bool _rpn_abs(rpn_context & ctxt) {
+    float a;
+    rpn_stack_pop(ctxt, a);
+    if (a < 0) a = -a;
+    rpn_stack_push(ctxt, a);
+    return true;
+}
+
 // ----------------------------------------------------------------------------
 // Advanced math
 // ----------------------------------------------------------------------------

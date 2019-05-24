@@ -117,7 +117,7 @@ void test_stack(void) {
 
 void test_logic(void) {
     float expected[] = {0, 1, 0, 1};
-    run_and_compare("1 1 == 1 1 != 2 1 > 2 1 <", sizeof(expected)/sizeof(float), expected);
+    run_and_compare("1 1 eq 1 1 ne 2 1 gt 2 1 lt", sizeof(expected)/sizeof(float), expected);
 }
 
 void test_boolean(void) {

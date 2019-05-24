@@ -4,7 +4,7 @@ RPNlib is a **Reverse Polish Notation** calculator for ESP8266 & ESP32 microcont
 The library accepts a c-string with commands to execute and provides methods to evaluate the output.
 It is meant to be embedded into third party software as a way to provide the user a simple to implement scripting language.
 
-[![version](https://img.shields.io/badge/version-0.2.0-brightgreen.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-0.3.0-brightgreen.svg)](CHANGELOG.md)
 [![codacy](https://img.shields.io/codacy/grade/dca10aead98240db83c23ef550b591dc/master.svg)](https://www.codacy.com/app/xoseperez/rpnlib/dashboard)
 [![travis](https://travis-ci.org/xoseperez/rpnlib.svg?branch=master)](https://travis-ci.org/xoseperez/rpnlib)
 [![license](https://img.shields.io/github/license/xoseperez/rpnlib.svg)](LICENSE)
@@ -104,12 +104,12 @@ cos     ( a -> cos(a) ) a in radians *
 sin     ( a -> sin(a) ) a in radians *
 tan     ( a -> tan(a) ) a in radians *
 
-==      ( a b -> a==b )
-!=      ( a b -> a!=b )
->       ( a b -> a>b )
->=      ( a b -> a>=b )
-<       ( a b -> a<b )
-<=      ( a b -> a<=b )
+eq      ( a b -> a==b )
+ne      ( a b -> a!=b )
+gt      ( a b -> a>b )
+ge      ( a b -> a>=b )
+lt      ( a b -> a<b )
+le      ( a b -> a<=b )
 
 cmp     ( a b -> c ) c is -1 if a<b, 0 if a==b and 1 if a>b
 cmp3    ( a b c -> d ) d is -1 if a<b, 1 if a>c and 0 if equals to b or c or in the middle

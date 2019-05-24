@@ -128,7 +128,7 @@ testF(CustomTest, test_stack) {
 
 testF(CustomTest, test_logic) {
     float expected[] = {0, 1, 0, 1};
-    run_and_compare("1 1 == 1 1 != 2 1 > 2 1 <", sizeof(expected)/sizeof(float), expected);
+    run_and_compare("1 1 eq 1 1 ne 2 1 gt 2 1 lt", sizeof(expected)/sizeof(float), expected);
 }
 
 testF(CustomTest, test_boolean) {

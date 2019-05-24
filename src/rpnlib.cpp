@@ -121,6 +121,7 @@ bool rpn_operators_init(rpn_context & ctxt) {
     rpn_operator_set(ctxt, "*", 2, _rpn_times);
     rpn_operator_set(ctxt, "/", 2, _rpn_divide);
     rpn_operator_set(ctxt, "mod", 2, _rpn_mod);
+    rpn_operator_set(ctxt, "abs", 1, _rpn_abs);
 
     rpn_operator_set(ctxt, "round", 2, _rpn_round);
     rpn_operator_set(ctxt, "ceil", 1, _rpn_ceil);
@@ -139,12 +140,12 @@ bool rpn_operators_init(rpn_context & ctxt) {
     rpn_operator_set(ctxt, "tan", 1, _rpn_tan);
     #endif
 
-    rpn_operator_set(ctxt, "==", 2, _rpn_eq);
-    rpn_operator_set(ctxt, "!=", 2, _rpn_ne);
-    rpn_operator_set(ctxt, ">", 2, _rpn_gt);
-    rpn_operator_set(ctxt, ">=", 2, _rpn_ge);
-    rpn_operator_set(ctxt, "<", 2, _rpn_lt);
-    rpn_operator_set(ctxt, "<=", 2, _rpn_le);
+    rpn_operator_set(ctxt, "eq", 2, _rpn_eq);
+    rpn_operator_set(ctxt, "ne", 2, _rpn_ne);
+    rpn_operator_set(ctxt, "gt", 2, _rpn_gt);
+    rpn_operator_set(ctxt, "ge", 2, _rpn_ge);
+    rpn_operator_set(ctxt, "lt", 2, _rpn_lt);
+    rpn_operator_set(ctxt, "le", 2, _rpn_le);
 
     rpn_operator_set(ctxt, "cmp", 2, _rpn_cmp);
     rpn_operator_set(ctxt, "cmp3", 3, _rpn_cmp3);

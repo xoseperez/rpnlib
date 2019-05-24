@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.0] 2019-05-24
+### Added
+- Added abs operator
+
+### Changed
+- Change compare operators to eq, ne, gt, ge, lt, le
+
 ## [0.2.0] 2019-05-24
 ### Added
 - rpn_process will (optionally) fail if variable does not exist
