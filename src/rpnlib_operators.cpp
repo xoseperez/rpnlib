@@ -26,7 +26,7 @@ extern "C" {
 }
 
 #define RPN_CONST_PI    3.141593
-#define RPN_CONST_E     2.178282
+#define RPN_CONST_E     2.718281
 
 // ----------------------------------------------------------------------------
 // Constants
